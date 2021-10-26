@@ -38,6 +38,7 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 const core = __importStar(__nccwpck_require__(2186));
 const github = __importStar(__nccwpck_require__(5438));
 const parser_1 = __nccwpck_require__(267);
+const strings_1 = __nccwpck_require__(8222);
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
@@ -47,10 +48,36 @@ function run() {
                 github.context.payload.action === 'opened') {
                 const openedEvent = github.context.payload;
                 const body = openedEvent.issue.body;
-                core.info(`Issue opened: ${body}`);
+                core.info(`Issue opened: ${openedEvent.issue.number}`);
                 const metadata = (0, parser_1.parseIssueBody)(body);
                 if (metadata) {
                     core.info(`Metadata: ${JSON.stringify(metadata)}`);
+                    const repoToken = core.getInput('repoToken', { required: true });
+                    const octokit = github.getOctokit(repoToken);
+                    // Add author as an assignee
+                    try {
+                        yield octokit.rest.issues.addAssignees({
+                            owner: openedEvent.repository.owner.login,
+                            repo: openedEvent.repository.name,
+                            issue_number: openedEvent.issue.number,
+                            assignees: [metadata.author],
+                        });
+                    }
+                    catch (addAssigneeError) {
+                        core.warning(`Unable to add assignee\n${JSON.stringify(addAssigneeError)}`);
+                    }
+                    // Add a comment
+                    try {
+                        yield octokit.rest.issues.createComment({
+                            owner: openedEvent.repository.owner.login,
+                            repo: openedEvent.repository.name,
+                            issue_number: openedEvent.issue.number,
+                            body: (0, strings_1.getAssignmentComment)(metadata.author),
+                        });
+                    }
+                    catch (createCommentError) {
+                        core.warning(`Unable to create comment\n${JSON.stringify(createCommentError)}`);
+                    }
                 }
             }
         }
@@ -92,6 +119,24 @@ function parseIssueBody(body) {
     return null;
 }
 exports.parseIssueBody = parseIssueBody;
+
+
+/***/ }),
+
+/***/ 8222:
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.getAssignmentComment = void 0;
+function getAssignmentComment(author) {
+    return `This issue has been assigned to you, @${author}. You are listed as the author for the document associated with this issue. If this is not correct, please take the following actions.
+
+- Assign this issue to the correct author
+- Create a pull request to update the \`author\` field in the YAML front-matter of this topic`;
+}
+exports.getAssignmentComment = getAssignmentComment;
 
 
 /***/ }),
