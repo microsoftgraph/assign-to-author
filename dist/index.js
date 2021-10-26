@@ -42,6 +42,8 @@ const strings_1 = __nccwpck_require__(8222);
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
+            // Add a repository secret called ACTIONS_STEP_DEBUG set to true to
+            // see this output in the logs
             core.info(`Event: ${github.context.eventName}, Action: ${github.context.action}`);
             core.info(`Payload: ${JSON.stringify(github.context.payload)}`);
             if (github.context.eventName === 'issues' &&
@@ -51,6 +53,7 @@ function run() {
                 core.info(`Issue opened: ${openedEvent.issue.number}`);
                 const repoToken = core.getInput('repoToken', { required: true });
                 const octokit = github.getOctokit(repoToken);
+                let needsLabel = true;
                 const metadata = (0, parser_1.parseIssueBody)(body);
                 if (metadata) {
                     core.info(`Metadata: ${JSON.stringify(metadata)}`);
@@ -62,11 +65,12 @@ function run() {
                             issue_number: openedEvent.issue.number,
                             assignees: [metadata.author],
                         });
+                        needsLabel = false;
                     }
                     catch (addAssigneeError) {
                         core.warning(`Unable to add assignee\n${JSON.stringify(addAssigneeError)}`);
                     }
-                    // Add a comment
+                    // Add a comment @-mentioning author
                     try {
                         yield octokit.rest.issues.createComment({
                             owner: openedEvent.repository.owner.login,
@@ -79,8 +83,8 @@ function run() {
                         core.warning(`Unable to create comment\n${JSON.stringify(createCommentError)}`);
                     }
                 }
-                else {
-                    // Missing metadata, add label
+                if (needsLabel) {
+                    // Missing metadata or failure to assign, add label
                     const label = core.getInput('needAssignLabel', { required: true });
                     try {
                         yield octokit.rest.issues.addLabels({
