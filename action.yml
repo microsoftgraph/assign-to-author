@@ -1,0 +1,16 @@
+name: 'Assign to Author'
+description: 'Assigns issues in the microsoft-graph-docs repository to the author of the referenced page'
+inputs:
+  repoToken:
+    description: 'Token for the repository'
+    required: true
+  needAssignLabel:
+    description: 'Name of label to add to issues that cannot be auto-assigned'
+    required: true
+  excludedAuthors:
+    description: 'Semi-colon delimited list of GitHub logins to ignore.'
+    required: false
+
+runs:
+  using: 'node12'
+  main: 'dist/index.js'
