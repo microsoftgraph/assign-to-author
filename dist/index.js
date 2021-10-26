@@ -42,7 +42,7 @@ function run() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             core.info(`Event: ${github.context.eventName}, Action: ${github.context.action}`);
-            core.info(`Payload: ${github.context.payload}`);
+            core.info(`Payload: ${JSON.stringify(github.context.payload)}`);
             if (github.context.eventName === 'issues' &&
                 github.context.action === 'opened') {
                 const openedEvent = github.context.payload;

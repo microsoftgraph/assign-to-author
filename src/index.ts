@@ -9,7 +9,7 @@ async function run(): Promise<void> {
     core.info(
       `Event: ${github.context.eventName}, Action: ${github.context.action}`
     );
-    core.info(`Payload: ${github.context.payload}`);
+    core.info(`Payload: ${JSON.stringify(github.context.payload)}`);
     if (
       github.context.eventName === 'issues' &&
       github.context.action === 'opened'
