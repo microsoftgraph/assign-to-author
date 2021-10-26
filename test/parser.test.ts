@@ -16,13 +16,13 @@ const wellFormedIssueBody = `This is an issue
 * Content Source: [api-reference/beta/api/group-post-groups.md](https://github.com/microsoftgraph/microsoft-graph-docs/blob/main/api-reference/beta/api/group-post-groups.md)
 * Product: **groups**
 * Technology: **microsoft-graph**
-* GitHub Login: @Jordanndahl
+* GitHub Login: @jasonjoh
 * Microsoft Alias: **MSGraphDocsVteam**`;
 
 const wellFormedIssueMetadata: IssueMetadata = {
   mdFileUrl:
     'https://github.com/microsoftgraph/microsoft-graph-docs/blob/main/api-reference/beta/api/group-post-groups.md',
-  author: 'Jordanndahl',
+  author: 'jasonjoh',
 };
 
 const missingAuthorIssueBody = `This is an issue
@@ -38,7 +38,7 @@ const missingAuthorIssueBody = `This is an issue
 * Content Source:
 * Product: **groups**
 * Technology: **microsoft-graph**
-* GitHub Login: @Jordanndahl
+* GitHub Login: @jasonjoh
 * Microsoft Alias: **MSGraphDocsVteam**`;
 
 const missingContentSourceIssueBody = `This is an issue

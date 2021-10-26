@@ -57,31 +57,8 @@ function run() {
                 const metadata = (0, parser_1.parseIssueBody)(body);
                 if (metadata) {
                     core.info(`Metadata: ${JSON.stringify(metadata)}`);
-                    // Add author as an assignee
-                    try {
-                        yield octokit.rest.issues.addAssignees({
-                            owner: openedEvent.repository.owner.login,
-                            repo: openedEvent.repository.name,
-                            issue_number: openedEvent.issue.number,
-                            assignees: [metadata.author],
-                        });
-                        needsLabel = false;
-                    }
-                    catch (addAssigneeError) {
-                        core.warning(`Unable to add assignee\n${JSON.stringify(addAssigneeError)}`);
-                    }
-                    // Add a comment @-mentioning author
-                    try {
-                        yield octokit.rest.issues.createComment({
-                            owner: openedEvent.repository.owner.login,
-                            repo: openedEvent.repository.name,
-                            issue_number: openedEvent.issue.number,
-                            body: (0, strings_1.getAssignmentComment)(metadata.author),
-                        });
-                    }
-                    catch (createCommentError) {
-                        core.warning(`Unable to create comment\n${JSON.stringify(createCommentError)}`);
-                    }
+                    const labelAdded = yield assignAndComment(octokit, openedEvent.repository.owner.login, openedEvent.repository.name, openedEvent.issue.number, metadata);
+                    needsLabel = !labelAdded;
                 }
                 if (needsLabel) {
                     // Missing metadata or failure to assign, add label
@@ -104,6 +81,37 @@ function run() {
             // General error
             core.setFailed(`Unexpected error: \n${JSON.stringify(error)}`);
         }
+    });
+}
+function assignAndComment(octokit, owner, repo, issue_number, metadata) {
+    return __awaiter(this, void 0, void 0, function* () {
+        let success = false;
+        // Add author as an assignee
+        try {
+            yield octokit.rest.issues.addAssignees({
+                owner: owner,
+                repo: repo,
+                issue_number: issue_number,
+                assignees: [metadata.author],
+            });
+            success = true;
+        }
+        catch (addAssigneeError) {
+            core.warning(`Unable to add assignee\n${JSON.stringify(addAssigneeError)}`);
+        }
+        // Add a comment @-mentioning author
+        try {
+            yield octokit.rest.issues.createComment({
+                owner: owner,
+                repo: repo,
+                issue_number: issue_number,
+                body: (0, strings_1.getAssignmentComment)(metadata.author),
+            });
+        }
+        catch (createCommentError) {
+            core.warning(`Unable to create comment\n${JSON.stringify(createCommentError)}`);
+        }
+        return success;
     });
 }
 run();
