@@ -71,8 +71,11 @@ async function assignAndComment(
   issue_number: number,
   metadata: IssueMetadata
 ): Promise<boolean> {
-  const excludedAuthors = core.getInput('excludedAuthors').split(';');
-  if (excludedAuthors.includes(metadata.author)) {
+  const excludedAuthors = core
+    .getInput('excludedAuthors')
+    .toLowerCase()
+    .split(';');
+  if (excludedAuthors.includes(metadata.author.toLowerCase())) {
     return false;
   }
 

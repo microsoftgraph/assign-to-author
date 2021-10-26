@@ -85,8 +85,11 @@ function run() {
 }
 function assignAndComment(octokit, owner, repo, issue_number, metadata) {
     return __awaiter(this, void 0, void 0, function* () {
-        const excludedAuthors = core.getInput('excludedAuthors').split(';');
-        if (excludedAuthors.includes(metadata.author)) {
+        const excludedAuthors = core
+            .getInput('excludedAuthors')
+            .toLowerCase()
+            .split(';');
+        if (excludedAuthors.includes(metadata.author.toLowerCase())) {
             return false;
         }
         let success = false;
