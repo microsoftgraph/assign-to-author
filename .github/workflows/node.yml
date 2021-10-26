@@ -1,0 +1,19 @@
+name: Node.js CI
+
+on:
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    name: Build and test
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Verify npm all runs and build output matches
+      uses: actions/setup-node@v2
+      with:
+        node-version: '14'
+    - run: npm ci
+    - run: npm run all
