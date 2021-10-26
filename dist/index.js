@@ -85,6 +85,10 @@ function run() {
 }
 function assignAndComment(octokit, owner, repo, issue_number, metadata) {
     return __awaiter(this, void 0, void 0, function* () {
+        const excludedAuthors = core.getInput('excludedAuthors').split(';');
+        if (excludedAuthors.includes(metadata.author)) {
+            return false;
+        }
         let success = false;
         // Add author as an assignee
         try {

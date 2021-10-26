@@ -14,5 +14,6 @@ jobs:
       with:
         repoToken: ${{ secrets.GITHUB_TOKEN }}
         needAssignLabel: needs-assignment
+        excludedAuthors: MSGraphDocsVteam
       id: assign
       uses: microsoftgraph/assign-to-author@dev
