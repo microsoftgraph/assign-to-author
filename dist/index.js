@@ -44,7 +44,7 @@ function run() {
             core.info(`Event: ${github.context.eventName}, Action: ${github.context.action}`);
             core.info(`Payload: ${JSON.stringify(github.context.payload)}`);
             if (github.context.eventName === 'issues' &&
-                github.context.action === 'opened') {
+                github.context.payload.action === 'opened') {
                 const openedEvent = github.context.payload;
                 const body = openedEvent.issue.body;
                 core.info(`Issue opened: ${body}`);

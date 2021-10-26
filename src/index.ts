@@ -12,7 +12,7 @@ async function run(): Promise<void> {
     core.info(`Payload: ${JSON.stringify(github.context.payload)}`);
     if (
       github.context.eventName === 'issues' &&
-      github.context.action === 'opened'
+      github.context.payload.action === 'opened'
     ) {
       const openedEvent = github.context.payload as IssuesOpenedEvent;
       const body = openedEvent.issue.body;
