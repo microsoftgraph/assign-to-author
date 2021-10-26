@@ -19,12 +19,12 @@ async function run(): Promise<void> {
       const body = openedEvent.issue.body;
       core.info(`Issue opened: ${openedEvent.issue.number}`);
 
+      const repoToken = core.getInput('repoToken', { required: true });
+      const octokit = github.getOctokit(repoToken);
+
       const metadata = parseIssueBody(body);
       if (metadata) {
         core.info(`Metadata: ${JSON.stringify(metadata)}`);
-
-        const repoToken = core.getInput('repoToken', { required: true });
-        const octokit = github.getOctokit(repoToken);
 
         // Add author as an assignee
         try {
@@ -52,6 +52,19 @@ async function run(): Promise<void> {
           core.warning(
             `Unable to create comment\n${JSON.stringify(createCommentError)}`
           );
+        }
+      } else {
+        // Missing metadata, add label
+        const label = core.getInput('needAssignLabel', { required: true });
+        try {
+          await octokit.rest.issues.addLabels({
+            owner: openedEvent.repository.owner.login,
+            repo: openedEvent.repository.name,
+            issue_number: openedEvent.issue.number,
+            labels: [label],
+          });
+        } catch (addLabelError) {
+          core.warning(`Unable to add label\n${JSON.stringify(addLabelError)}`);
         }
       }
     }

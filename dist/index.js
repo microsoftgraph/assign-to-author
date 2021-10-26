@@ -49,11 +49,11 @@ function run() {
                 const openedEvent = github.context.payload;
                 const body = openedEvent.issue.body;
                 core.info(`Issue opened: ${openedEvent.issue.number}`);
+                const repoToken = core.getInput('repoToken', { required: true });
+                const octokit = github.getOctokit(repoToken);
                 const metadata = (0, parser_1.parseIssueBody)(body);
                 if (metadata) {
                     core.info(`Metadata: ${JSON.stringify(metadata)}`);
-                    const repoToken = core.getInput('repoToken', { required: true });
-                    const octokit = github.getOctokit(repoToken);
                     // Add author as an assignee
                     try {
                         yield octokit.rest.issues.addAssignees({
@@ -77,6 +77,21 @@ function run() {
                     }
                     catch (createCommentError) {
                         core.warning(`Unable to create comment\n${JSON.stringify(createCommentError)}`);
+                    }
+                }
+                else {
+                    // Missing metadata, add label
+                    const label = core.getInput('needAssignLabel', { required: true });
+                    try {
+                        yield octokit.rest.issues.addLabels({
+                            owner: openedEvent.repository.owner.login,
+                            repo: openedEvent.repository.name,
+                            issue_number: openedEvent.issue.number,
+                            labels: [label],
+                        });
+                    }
+                    catch (addLabelError) {
+                        core.warning(`Unable to add label\n${JSON.stringify(addLabelError)}`);
                     }
                 }
             }

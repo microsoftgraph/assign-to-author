@@ -13,5 +13,6 @@ jobs:
     - name: Assign
       with:
         repoToken: ${{ secrets.GITHUB_TOKEN }}
+        needAssignLabel: needs-assignment
       id: assign
       uses: microsoftgraph/assign-to-author@dev
