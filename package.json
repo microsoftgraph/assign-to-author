@@ -1,0 +1,41 @@
+{
+  "name": "assign-to-author",
+  "version": "1.0.0",
+  "description": "This GitHub action assigns issues in the microsoft-graph-docs repository to the author of the referenced page",
+  "main": "lib/index.js",
+  "scripts": {
+    "format": "prettier --write **/*.ts",
+    "test": "jest",
+    "build": "tsc",
+    "package": "ncc build --source-map --license licenses.txt",
+    "all": "npm run format && npm run build && npm run test && npm run package"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/microsoftgraph/assign-to-author.git"
+  },
+  "author": "jasonjoh",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/microsoftgraph/assign-to-author/issues"
+  },
+  "homepage": "https://github.com/microsoftgraph/assign-to-author#readme",
+  "dependencies": {
+    "@actions/core": "^1.6.0",
+    "@actions/github": "^5.0.0",
+    "node-fetch": "^3.0.0"
+  },
+  "devDependencies": {
+    "@octokit/webhooks-definitions": "^3.67.3",
+    "@vercel/ncc": "^0.31.1",
+    "jest": "^27.3.1",
+    "nock": "^13.1.4",
+    "prettier": "^2.4.1",
+    "ts-jest": "^27.0.7",
+    "typescript": "^4.4.4"
+  },
+  "prettier": {
+    "endOfLine": "auto",
+    "singleQuote": true
+  }
+}
