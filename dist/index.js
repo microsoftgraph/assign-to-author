@@ -37,14 +37,21 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 const core = __importStar(__nccwpck_require__(2186));
 const github = __importStar(__nccwpck_require__(5438));
+const parser_1 = __nccwpck_require__(267);
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
+            core.info(`Event: ${github.context.eventName}, Action: ${github.context.action}`);
+            core.info(`Payload: ${github.context.payload}`);
             if (github.context.eventName === 'issues' &&
                 github.context.action === 'opened') {
                 const openedEvent = github.context.payload;
                 const body = openedEvent.issue.body;
                 core.info(`Issue opened: ${body}`);
+                const metadata = (0, parser_1.parseIssueBody)(body);
+                if (metadata) {
+                    core.info(`Metadata: ${JSON.stringify(metadata)}`);
+                }
             }
         }
         catch (error) {
@@ -54,6 +61,37 @@ function run() {
     });
 }
 run();
+
+
+/***/ }),
+
+/***/ 267:
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.parseIssueBody = void 0;
+const mdFileUrlRegex = /^\*\s*Content\s*Source:\s*\[.*\]\((?<mdFile>.*)\)/gim;
+const authorRegex = /^\*\s*GitHub\s*Login:\s*@(?<gitHubLogin>.*)/gim;
+function parseIssueBody(body) {
+    var _a, _b;
+    // Find the content source in the issue metadata if present
+    const fileUrlMatch = mdFileUrlRegex.exec(body);
+    if ((_a = fileUrlMatch === null || fileUrlMatch === void 0 ? void 0 : fileUrlMatch.groups) === null || _a === void 0 ? void 0 : _a.mdFile) {
+        // Find the author in the issue metadat if present
+        const authorMatch = authorRegex.exec(body);
+        if ((_b = authorMatch === null || authorMatch === void 0 ? void 0 : authorMatch.groups) === null || _b === void 0 ? void 0 : _b.gitHubLogin) {
+            // We have required data
+            return {
+                mdFileUrl: fileUrlMatch.groups.mdFile,
+                author: authorMatch.groups.gitHubLogin,
+            };
+        }
+    }
+    return null;
+}
+exports.parseIssueBody = parseIssueBody;
 
 
 /***/ }),

@@ -6,6 +6,10 @@ import { parseIssueBody } from './parser';
 
 async function run(): Promise<void> {
   try {
+    core.info(
+      `Event: ${github.context.eventName}, Action: ${github.context.action}`
+    );
+    core.info(`Payload: ${github.context.payload}`);
     if (
       github.context.eventName === 'issues' &&
       github.context.action === 'opened'
