@@ -1,6 +1,6 @@
 import * as core from '@actions/core';
 import * as github from '@actions/github';
-import { IssuesOpenedEvent } from '@octokit/webhooks-definitions/schema';
+import { IssuesOpenedEvent } from '@octokit/webhooks-types';
 import { GitHub } from '@actions/github/lib/utils';
 
 import { parseIssueBody } from './parser';

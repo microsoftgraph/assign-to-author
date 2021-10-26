@@ -137,17 +137,19 @@ const mdFileUrlRegex = /^\*\s*Content\s*Source:\s*\[.*\]\((?<mdFile>.*)\)/gim;
 const authorRegex = /^\*\s*GitHub\s*Login:\s*@(?<gitHubLogin>.*)/gim;
 function parseIssueBody(body) {
     var _a, _b;
-    // Find the content source in the issue metadata if present
-    const fileUrlMatch = mdFileUrlRegex.exec(body);
-    if ((_a = fileUrlMatch === null || fileUrlMatch === void 0 ? void 0 : fileUrlMatch.groups) === null || _a === void 0 ? void 0 : _a.mdFile) {
-        // Find the author in the issue metadat if present
-        const authorMatch = authorRegex.exec(body);
-        if ((_b = authorMatch === null || authorMatch === void 0 ? void 0 : authorMatch.groups) === null || _b === void 0 ? void 0 : _b.gitHubLogin) {
-            // We have required data
-            return {
-                mdFileUrl: fileUrlMatch.groups.mdFile,
-                author: authorMatch.groups.gitHubLogin,
-            };
+    if (body) {
+        // Find the content source in the issue metadata if present
+        const fileUrlMatch = mdFileUrlRegex.exec(body);
+        if ((_a = fileUrlMatch === null || fileUrlMatch === void 0 ? void 0 : fileUrlMatch.groups) === null || _a === void 0 ? void 0 : _a.mdFile) {
+            // Find the author in the issue metadat if present
+            const authorMatch = authorRegex.exec(body);
+            if ((_b = authorMatch === null || authorMatch === void 0 ? void 0 : authorMatch.groups) === null || _b === void 0 ? void 0 : _b.gitHubLogin) {
+                // We have required data
+                return {
+                    mdFileUrl: fileUrlMatch.groups.mdFile,
+                    author: authorMatch.groups.gitHubLogin,
+                };
+            }
         }
     }
     return null;
