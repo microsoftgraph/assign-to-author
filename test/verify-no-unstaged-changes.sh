@@ -1,5 +1,4 @@
 #!/bin/bash
-git checkout dist/index.js.map
 
 if [[ "$(git status --porcelain)" != "" ]]; then
     echo ----------------------------------------
