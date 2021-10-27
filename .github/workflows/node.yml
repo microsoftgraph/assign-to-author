@@ -17,3 +17,5 @@ jobs:
         node-version: '14'
     - run: npm ci
     - run: npm run all
+    - name: Verify no unstaged changes
+      run: test/verify-no-unstaged-changes.sh
