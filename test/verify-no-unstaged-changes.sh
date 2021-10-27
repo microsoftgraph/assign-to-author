@@ -2,13 +2,13 @@
 git checkout dist/index.js.map
 
 if [[ "$(git status --porcelain)" != "" ]]; then
-    echo ----------------------------------------
+    echo ---------------------------------------
     echo git status
-    echo ----------------------------------------
+    echo ---------------------------------------
     git status
-    echo ----------------------------------------
+    echo ---------------------------------------
     echo Troubleshooting
-    echo ----------------------------------------
+    echo ---------------------------------------
     echo "::error::Unstaged changes detected. Did you forget to commit build output?"
     exit 1
 fi
