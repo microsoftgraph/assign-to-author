@@ -11,7 +11,6 @@ async function run(): Promise<void> {
   try {
     // Add a repository secret called ACTIONS_STEP_DEBUG set to true to
     // see this output in the logs
-    core.info('sup');
     core.info(
       `Event: ${github.context.eventName}, Action: ${github.context.action}`
     );
