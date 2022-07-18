@@ -26,7 +26,7 @@
     "node-fetch": "^3.2.8"
   },
   "devDependencies": {
-    "@octokit/webhooks-types": "^5.8.0",
+    "@octokit/webhooks-types": "^6.2.3",
     "@vercel/ncc": "^0.34.0",
     "jest": "^27.5.1",
     "nock": "^13.2.8",
