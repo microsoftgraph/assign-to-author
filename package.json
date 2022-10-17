@@ -1,6 +1,6 @@
 {
   "name": "assign-to-author",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "This GitHub action assigns issues in the microsoft-graph-docs repository to the author of the referenced page",
   "main": "lib/index.js",
   "scripts": {
