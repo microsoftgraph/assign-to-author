@@ -1,6 +1,6 @@
 {
   "name": "assign-to-author",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "This GitHub action assigns issues in the microsoft-graph-docs repository to the author of the referenced page",
   "main": "lib/index.js",
   "scripts": {
@@ -21,18 +21,18 @@
   },
   "homepage": "https://github.com/microsoftgraph/assign-to-author#readme",
   "dependencies": {
-    "@actions/core": "^1.6.0",
-    "@actions/github": "^5.0.0",
-    "node-fetch": "^3.1.0"
+    "@actions/core": "^1.10.0",
+    "@actions/github": "^5.1.1",
+    "node-fetch": "^3.2.10"
   },
   "devDependencies": {
-    "@octokit/webhooks-types": "^5.2.0",
-    "@vercel/ncc": "^0.33.1",
-    "jest": "^27.4.7",
-    "nock": "^13.2.1",
-    "prettier": "^2.5.1",
-    "ts-jest": "^27.1.2",
-    "typescript": "^4.5.4"
+    "@octokit/webhooks-types": "^6.5.0",
+    "@vercel/ncc": "^0.34.0",
+    "jest": "^27.5.1",
+    "nock": "^13.2.9",
+    "prettier": "^2.7.1",
+    "ts-jest": "^27.1.4",
+    "typescript": "^4.8.4"
   },
   "prettier": {
     "endOfLine": "auto",
