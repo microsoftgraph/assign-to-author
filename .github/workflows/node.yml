@@ -19,6 +19,6 @@ jobs:
     - name: Verify npm all runs and build output matches
       uses: actions/setup-node@v3
       with:
-        node-version: '16'
+        node-version: '20'
     - run: npm ci
     - run: npm run all

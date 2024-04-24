@@ -12,7 +12,7 @@ async function run(): Promise<void> {
     // Add a repository secret called ACTIONS_STEP_DEBUG set to true to
     // see this output in the logs
     core.info(
-      `Event: ${github.context.eventName}, Action: ${github.context.action}`
+      `Event: ${github.context.eventName}, Action: ${github.context.action}`,
     );
     core.info(`Payload: ${JSON.stringify(github.context.payload)}`);
 
@@ -37,7 +37,7 @@ async function run(): Promise<void> {
           openedEvent.repository.owner.login,
           openedEvent.repository.name,
           openedEvent.issue.number,
-          metadata
+          metadata,
         );
 
         needsLabel = !labelAdded;
@@ -69,7 +69,7 @@ async function assignAndComment(
   owner: string,
   repo: string,
   issue_number: number,
-  metadata: IssueMetadata
+  metadata: IssueMetadata,
 ): Promise<boolean> {
   const excludedAuthors = core
     .getInput('excludedAuthors')
@@ -104,7 +104,7 @@ async function assignAndComment(
     });
   } catch (createCommentError) {
     core.warning(
-      `Unable to create comment\n${JSON.stringify(createCommentError)}`
+      `Unable to create comment\n${JSON.stringify(createCommentError)}`,
     );
   }
 
