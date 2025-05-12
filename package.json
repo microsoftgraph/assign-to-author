@@ -22,7 +22,7 @@
   "homepage": "https://github.com/microsoftgraph/assign-to-author#readme",
   "dependencies": {
     "@actions/core": "^1.11.1",
-    "@actions/github": "^6.0.0",
+    "@actions/github": "^6.0.1",
     "node-fetch": "^3.3.2"
   },
   "devDependencies": {
